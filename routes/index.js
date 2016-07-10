@@ -1,0 +1,13 @@
+const express = require('express');
+const router = express.Router();
+
+// define the home page route
+router.get('/', function(req, res) {
+  res.send('index page');
+});
+
+router.get('/auth', function(req, res) {
+  res.render('auth');
+});
+
+module.exports = router;
