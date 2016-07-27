@@ -1,13 +1,17 @@
 const express = require('express');
 const router = express.Router();
 
-// define the home page route
-router.get('/', function(req, res) {
-  res.render('index');
-});
 
-router.get('/auth', function(req, res) {
-  res.render('auth');
-});
+// router.get('/', function(req, res) {
+//   res.render('index');
+// });
+
+// router.get('/auth', function(req, res) {
+//   res.render('auth');
+// });
+
+// router.get('screen', () => {
+//   res.render('screen');
+// });
 
 module.exports = router;
