@@ -1,9 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import { Hoge } from './components/hoge.jsx';
+import { Screen } from './components/screen.jsx';
 
 ReactDOM.render(
-  <Hoge/>,
+  <Screen/>,
   document.getElementById('app-root')
 );
