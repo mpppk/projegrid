@@ -20,5 +20,9 @@
   "bugs": {
     "url": "https://github.com/mpppk/projegrid/issues"
   },
-  "homepage": "https://github.com/mpppk/projegrid#readme"
+  "homepage": "https://github.com/mpppk/projegrid#readme",
+  "engines": {
+    "node": "^6.3.1",
+    "npm": "^3"
+  }
 }
