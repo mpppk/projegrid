@@ -34,14 +34,14 @@ module.exports = {
     reasons: DEBUG
   },
 
-  entry: [
-    './src/js/app.jsx'
-  ],
+  entry: {
+      app:'./src/js/app.jsx',
+  },
 
   output: {
-    path: path.join(__dirname, '../', 'static', 'bundle'),
-    filename: 'app.js',
-    publicPath: '/bundle/'
+    path: path.resolve(__dirname, '../', 'static', 'bundle'),
+    filename: '[name].bundle.js',
+    publicPath: '/bundle/',
   },
 
   target: 'web',

@@ -2,9 +2,10 @@ var webpack = require('webpack');
 var WebpackDevServer = require('webpack-dev-server');
 var config = require('./webpack.config.js');
 
-config.entry.push(
-  'webpack-dev-server/client?http://localhost:3000',
-  'webpack/hot/only-dev-server'
+config.entry = Object.assign({}, config.entry, {
+  dev_server: 'webpack-dev-server/client?http://localhost:3000',
+  only_dev_server: 'webpack/hot/only-dev-server',
+  }
 );
 
 config.plugins.push(new webpack.HotModuleReplacementPlugin());
