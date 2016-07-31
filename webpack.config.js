@@ -35,11 +35,11 @@ module.exports = {
   },
 
   entry: {
-      app:'./src/js/app.jsx',
+      app:'./front_end/src/js/app.jsx',
   },
 
   output: {
-    path: path.resolve(__dirname, '../', 'static', 'bundle'),
+    path: path.resolve(__dirname, 'static', 'bundle'),
     filename: '[name].bundle.js',
     publicPath: '/bundle/',
   },
@@ -53,7 +53,7 @@ module.exports = {
   module: {
     loaders: [{
         test: /\.jsx?$/,
-        include: [path.resolve(__dirname, 'src', 'js')],
+        include: [path.resolve(__dirname, 'front_end','src', 'js')],
         loaders: ['react-hot', 'babel'] },
     ],
   },

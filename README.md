@@ -1,7 +1,17 @@
 # projegrid
 
-grid on the table
+## Start server
+```
+npm install
+npm run release
+npm start
+```
 
-## LICENSE
+## Start dev server
 
-MIT
+ ```
+ npm install
+ npm run dev-server
+ ```
+
+ http://localhost:3000

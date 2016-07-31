@@ -13,7 +13,7 @@ config.plugins.push(new webpack.HotModuleReplacementPlugin());
 new WebpackDevServer(webpack(config), {
   publicPath: config.output.publicPath,
   hot: true,
-  contentBase: '../static/',
+  contentBase: './static/',
   historyApiFallback: true,
 }).listen(3000, 'localhost', function (err, result) {
   if (err) {
