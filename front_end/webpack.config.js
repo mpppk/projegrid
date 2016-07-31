@@ -31,7 +31,7 @@ module.exports = {
     chunkModules: true,
     cached: true,
     cachedAssets: true,
-    reasons: DEBUG
+    reasons: DEBUG,
   },
 
   entry: {
@@ -54,7 +54,7 @@ module.exports = {
     loaders: [{
         test: /\.jsx?$/,
         include: [path.resolve(__dirname, 'src', 'js')],
-        loaders: ['react-hot', 'babel'] }
-    ]
-  }
+        loaders: ['react-hot', 'babel'] },
+    ],
+  },
 };
