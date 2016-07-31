@@ -5,6 +5,7 @@
     "start": "node server.js",
     "release": "webpack --release",
     "debug": "webpack",
+    "watch": "webpack -w",
     "lint": "eslint src/**"
   },
   "license": "MIT",
