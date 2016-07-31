@@ -1,17 +1,8 @@
 const express = require('express');
 const router = express.Router();
 
+const api = require('./api/api.js');
 
-// router.get('/', function(req, res) {
-//   res.render('index');
-// });
-
-// router.get('/auth', function(req, res) {
-//   res.render('auth');
-// });
-
-// router.get('screen', () => {
-//   res.render('screen');
-// });
+router.use('/api', api);
 
 module.exports = router;
