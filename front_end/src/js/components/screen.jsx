@@ -1,22 +1,19 @@
 import React from 'react';
 import firebase from 'firebase';
 
+import config from '../utils/config.js';
+
 export class Screen extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { database: null };
+    this.state = {database: null};
 
     this.retriveData = this.retriveData.bind(this);
   }
 
   componentDidMount() {
-    const config = {
-      apiKey: "AIzaSyDNBvfpc07ND30lVfjcPYE6VddcVd237mQ",
-      authDomain: "sample-5f412.firebaseapp.com",
-      databaseURL: "https://sample-5f412.firebaseio.com",
-      storageBucket: "sample-5f412.appspot.com",
-    };
-    firebase.initializeApp(config);
+    const firebaseConf = config.firebase.config;
+    firebase.initializeApp(firebaseConf);
     firebase.auth().onAuthStateChanged(function (user) {
       if (user) {
         this.retriveData(user);

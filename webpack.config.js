@@ -35,7 +35,7 @@ module.exports = {
   },
 
   entry: {
-    app: './front_end/src/js/app.jsx',
+    screen: './front_end/src/js/screen.jsx',
   },
 
   output: {
