@@ -34,36 +34,38 @@ router.post('/', function (req, res) {
   }
 
   const screenRef = database.ref(`screens/${paScreen}`);
-  screenRef.once('value', snapshot => {
-    // 管理者によるデータベースアクセスなので、paScreenの値さえ間違っていなければ
-    // Ruleにかかわらず確実にsnapshotを参照可能
-    const token = snapshot.val().token;
-    if (!token) {
-      // なぜかスクリーンにトークンが設定されていない
-      res.status(400).json({error: 'Failed to authenticate'});
-      return;
-    }
+  screenRef.once('value')
+    .then(snapshot => {
+      // 管理者によるデータベースアクセスなので、paScreenの値さえ間違っていなければ
+      // Ruleにかかわらず確実にsnapshotを参照可能
+      const token = snapshot.val().token;
+      if (!token) {
+        // なぜかスクリーンにトークンが設定されていない
+        res.status(400).json({error: 'Failed to authenticate'});
+        return;
+      }
 
-    if (token !== paScreenToken) {
-      // トークンがあっていない
-      res.status(400).json({error: 'invalid token'});
-    } else {
-      // トークンの照合ができたので書き込み可能
-      screenRef.update({
-        state: 'checked_in',
-        grid1: '',
-        grid2: '',
-        grid3: '',
-      });
-      res.status(200).end();
-    }
-  }, error => {
-    // データベース接続に失敗
-    // おそらくscreenの指定が間違っている
-    console.log(error);
-    res.status(400).json({error: 'Failed to connect to the database'});
-    return;
-  });
+      if (token !== paScreenToken) {
+        // トークンがあっていない
+        res.status(400).json({error: 'invalid token'});
+      } else {
+        // トークンの照合ができたので書き込み可能
+        screenRef.update({
+          state: 'checked_in',
+          grid1: '',
+          grid2: '',
+          grid3: '',
+        });
+        res.status(200).end();
+      }
+    })
+    .catch(error => {
+      // データベース接続に失敗
+      // おそらくscreenの指定が間違っている
+      console.log(error);
+      res.status(400).json({error: 'Failed to connect to the database'});
+      return;
+    });
 });
 
 
