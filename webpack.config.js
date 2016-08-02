@@ -35,10 +35,10 @@ module.exports = {
   },
 
   entry: {
-    index: './front_end/src/js/index.js',
+    index: './front_end/src/js/index.jsx',
     screen: './front_end/src/js/screen.jsx',
     login: './front_end/src/js/login.js',
-    check_in: './front_end/src/js/check_in.js',
+    check_in: './front_end/src/js/check_in.jsx',
   },
 
   output: {
