@@ -9,6 +9,7 @@ const router = express.Router();
  * 特定のスクリーンにチェックインし、成功した場合そのスクリーンのstateを'checked_in'にする
  */
 router.post('/', function (req, res) {
+  // Firebase初期化
   try {
     firebase.app();
   } catch (error) {
@@ -19,10 +20,12 @@ router.post('/', function (req, res) {
   }
   const database = firebase.database();
 
+  // リクエストボディのscreenとscreenTokenパラメータを取得
   const requestBody = req.body;
   const paScreen = requestBody.screen;
   const paScreenToken = requestBody.screenToken;
   if (!paScreen || !paScreenToken) {
+    // リクエストボディの形式が間違っている
     res.status(400).json({
       error: 'Bad Request',
       errorMessage: `screen: ${paScreen}, screen_token: ${paScreenToken}`,
@@ -32,12 +35,19 @@ router.post('/', function (req, res) {
 
   const screenRef = database.ref(`screens/${paScreen}`);
   screenRef.once('value', snapshot => {
+    // 管理者によるデータベースアクセスなので、paScreenの値さえ間違っていなければ
+    // Ruleにかかわらず確実にsnapshotを参照可能
     const token = snapshot.val().token;
     if (!token) {
+      // なぜかスクリーンにトークンが設定されていない
       res.status(400).json({error: 'Failed to authenticate'});
       return;
     }
-    if (token === paScreenToken) {
+
+    if (token !== paScreenToken) {
+      // トークンがあっていない
+      res.status(400).json({error: 'invalid token'});
+    } else {
       // トークンの照合ができたので書き込み可能
       screenRef.update({
         state: 'checked_in',
@@ -46,10 +56,10 @@ router.post('/', function (req, res) {
         grid3: '',
       });
       res.status(200).end();
-    } else {
-      res.status(400).json({error: 'invalid token'});
     }
   }, error => {
+    // データベース接続に失敗
+    // おそらくscreenの指定が間違っている
     console.log(error);
     res.status(400).json({error: 'Failed to connect to the database'});
     return;
