@@ -6,5 +6,10 @@ module.exports = {
       authDomain: '',
       databaseURL: '',
     },
+    serviceAccount: {
+      projectId: '',
+      clientEmail: '',
+      privateKey: '',
+    },
   },
 };
