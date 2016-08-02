@@ -38,7 +38,7 @@ router.post('/', function (req, res) {
       return;
     }
     if (token === paScreenToken) {
-      // トークンの称号ができたので書き込み可能
+      // トークンの照合ができたので書き込み可能
       screenRef.update({
         state: 'checked_in',
         grid1: '',
