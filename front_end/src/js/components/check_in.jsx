@@ -137,7 +137,28 @@ export class CheckIn extends React.Component {
 
   handleCheckOut(e) {
     e.preventDefault();
+    fetch(config.url + '/api/screen/check_out', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        screen: this.state.param.screen,
+        screenToken: this.state.param.screenToken,
+      }),
+    })
+      .then(response => {
+        if (response.ok) {
+          location.href = config.url;
+        } else {
+          return Promise.reject(new Error(response.status));
+        }
+      })
+      .catch(error => {
+        console.error(error);
+      });
   }
+
 
   render() {
     if (this.state.initialized === false) {
