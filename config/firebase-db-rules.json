@@ -1,0 +1,28 @@
+{
+  "rules": {
+    ".read": false,
+    ".write": false,
+    "screens": {
+      "$uid": {
+        ".read": "$uid === auth.uid ||
+        ($uid === root.child('users/' + auth.uid + '/screen').val()
+        && data.child('token').val() === root.child('users/' + auth.uid + '/screenToken').val())",
+        ".write": "$uid === auth.uid ||
+        ($uid === root.child('users/' + auth.uid + '/screen').val()
+        && data.child('token').val() === root.child('users/' + auth.uid + '/screenToken').val())",
+        "token":{
+          ".read": "$uid === auth.uid",
+          ".write": "$uid === auth.uid"
+        }
+      }
+    },
+    "users": {
+      "$uid": {
+        ".read": "$uid === auth.uid",
+        ".write" :"$uid === auth.uid",
+        "screen": {},
+        "screenToken": {}
+      }
+    }
+  }
+}
