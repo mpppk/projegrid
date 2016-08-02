@@ -19,7 +19,7 @@ export class Screen extends React.Component {
     const firebaseConf = config.firebase.config;
     firebase.initializeApp(firebaseConf);
     firebase.auth().onAuthStateChanged(function (user) {
-      if (user) {
+      if (user && !user.isAnonymous) {
         this.setState({
           screen: user.uid,
         });
