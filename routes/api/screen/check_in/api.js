@@ -38,7 +38,9 @@ router.post('/', function (req, res) {
     .then(snapshot => {
       // 管理者によるデータベースアクセスなので、paScreenの値さえ間違っていなければ
       // Ruleにかかわらず確実にsnapshotを参照可能
-      const token = snapshot.val().token;
+      const dbData = snapshot.val();
+
+      const token = dbData.token;
       if (!token) {
         // なぜかスクリーンにトークンが設定されていない
         res.status(400).json({error: 'Failed to authenticate'});
@@ -48,21 +50,22 @@ router.post('/', function (req, res) {
       if (token !== paScreenToken) {
         // トークンがあっていない
         res.status(400).json({error: 'invalid token'});
-      } else {
-        // トークンの照合ができたので書き込み可能
-        screenRef.update({
-          state: 'checked_in',
-          grid1: '',
-          grid2: '',
-          grid3: '',
-        });
-        res.status(200).end();
+        return;
       }
+      // トークンの照合ができたのでここからスクリーンに書き込み可能
+
+      screenRef.update({
+        state: 'checked_in',
+        grid1: '',
+        grid2: '',
+        grid3: '',
+      });
+      res.status(200).end();
+      return;
     })
     .catch(error => {
       // データベース接続に失敗
       // おそらくscreenの指定が間違っている
-      console.log(error);
       res.status(400).json({error: 'Failed to connect to the database'});
       return;
     });

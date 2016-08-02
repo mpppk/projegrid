@@ -45,22 +45,22 @@ router.post('/', function (req, res) {
       if (token !== paScreenToken) {
         // トークンがあっていない
         res.status(400).json({error: 'invalid token'});
-      } else {
-        // トークンの照合ができたのでチェックアウト
-        // TODO トークンを新しく生成して設定する
-        screenRef.update({
-          state: null,
-          grid1: '',
-          grid2: '',
-          grid3: '',
-        });
-        res.status(200).end();
       }
+
+      // トークンの照合ができたのでチェックアウト
+      // TODO トークンを新しく生成して設定する
+      screenRef.update({
+        state: null,
+        grid1: '',
+        grid2: '',
+        grid3: '',
+      });
+      res.status(200).end();
+
     })
     .catch(error => {
       // データベース接続に失敗
       // おそらくscreenの指定が間違っている
-      console.log(error);
       res.status(400).json({error: 'Failed to connect to the database'});
       return;
     });
