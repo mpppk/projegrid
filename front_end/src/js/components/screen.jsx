@@ -7,7 +7,10 @@ import config from '../utils/config.js';
 export class Screen extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {database: null};
+    this.state = {
+      screen: '',
+      screenData: '',
+    };
 
     this.retrieveData = this.retrieveData.bind(this);
   }
@@ -46,35 +49,40 @@ export class Screen extends React.Component {
   }
 
   render() {
-    let grid1, grid2, grid3, qrImg, url;
-    grid1 = grid2 = grid3 = qrImg = url = null;
     let html = <div/>;
 
-    // DBからデータ読み込み済み
-    if (this.state.screenData) {
-      const database = this.state.screenData;
-      grid1 = database.grid1;
-      grid2 = database.grid2;
-      grid3 = database.grid3;
-      const token = database.token;
+    if (!this.state.screenData) {
+      // DBからデータ読み込み中
 
-      const qr = qrcode.qrcode(8, 'M');
-      url = config.url + '/auth/check_in.html?token=' + token + '&screen=' + this.state.screen;
-      qr.addData(url);
-      qr.make();
-      qrImg = qr.createImgTag(8);
-
-      html = (
-        <div>
-          <div>Grid1: {grid1}</div>
-          <div>Grid2: {grid2}</div>
-          <div>Grid3: {grid3}</div>
-          <div dangerouslySetInnerHTML={{__html:qrImg}}></div>
-          <div>{url}</div>
-        </div>
-      );
-    } else {
       html = <div>読み込み中...</div>;
+
+    } else {
+      // DBからデータ読み込み済み
+
+      const {grid1, grid2, grid3, token, state} = this.state.screenData;
+
+      if (state === 'checked_in') {
+        html = (
+          <div>
+            <div>Grid1: {grid1}</div>
+            <div>Grid2: {grid2}</div>
+            <div>Grid3: {grid3}</div>
+          </div>
+        );
+      } else {
+        const qr = qrcode.qrcode(9, 'M');
+        const url = config.url + '/auth/check_in.html?screen_token=' + token + '&screen=' + this.state.screen;
+        qr.addData(url);
+        qr.make();
+        const qrImg = qr.createImgTag(9);
+
+        html = (
+          <div>
+            <div dangerouslySetInnerHTML={{__html: qrImg}}></div>
+            <div>{url}</div>
+          </div>
+        );
+      }
     }
 
     return html;
