@@ -1,3 +1,4 @@
+import 'whatwg-fetch';
 import React from 'react';
 import firebase from 'firebase';
 import queryString from 'query-string';
