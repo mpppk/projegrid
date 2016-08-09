@@ -37,18 +37,18 @@ router.post('/', function (req, res) {
     .then(snapshot => {
       // 管理者によるデータベースアクセスなので、paScreenの値さえ間違っていなければ
       // Ruleにかかわらず確実にsnapshotを参照可能
-      const token = snapshot.val().token;
-      if (!token) {
+      const secretToken = snapshot.val().secretToken;
+      if (!secretToken) {
         res.status(400).json({error: 'Failed to authenticate'});
         return;
       }
-      if (token !== paScreenToken) {
+      if (secretToken !== paScreenToken) {
         // トークンがあっていない
         res.status(400).json({error: 'invalid token'});
+        return;
       }
 
       // トークンの照合ができたのでチェックアウト
-      // TODO トークンを新しく生成して設定する
       screenRef.update({
         state: null,
         grid1: '',
@@ -56,7 +56,6 @@ router.post('/', function (req, res) {
         grid3: '',
       });
       res.status(200).end();
-
     })
     .catch(error => {
       // データベース接続に失敗

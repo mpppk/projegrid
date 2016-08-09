@@ -22,32 +22,6 @@ $(() => {
       })
       .then(user => {
         // ログイン成功
-        // APIでトークンを生成し取得する
-        const tokenRequest = fetch(config.url + '/api/user/token', {
-          method: 'POST',
-          headers: {
-            'Accept': 'application/json',
-          },
-        });
-
-        // トークンをFirebaseのDBに登録するための参照
-        const screen = database.ref(`screens/${user.uid}`);
-
-        return Promise.all([tokenRequest, screen]);
-      })
-      .then(p => {
-        const response = p[0];
-        const database = p[1];
-        return Promise.all([response.json(), database]);
-      })
-      .then(p => {
-        const data = p[0];
-        const database = p[1];
-        
-        // DBのtokenキーに書き込む
-        database.update({
-          token: data.token,
-        });
         location.href = config.url + '/screen.html';
       });
   });

@@ -1,4 +1,5 @@
 import 'whatwg-fetch';
+import 'babel-polyfill';
 import React from 'react';
 import firebase from 'firebase';
 import queryString from 'query-string';
@@ -13,6 +14,8 @@ export class CheckIn extends React.Component {
       checkedIn: false,
       database: null,
       param: null,
+      secretToken: '',
+      user: null,
     };
     this.handleSubmitGrid1 = this.handleSubmitGrid1.bind(this);
     this.handleSubmitGrid2 = this.handleSubmitGrid2.bind(this);
@@ -39,68 +42,71 @@ export class CheckIn extends React.Component {
       },
     });
 
-    this.start(database, screen, screenToken);
-  }
+    start.bind(this)(database, screen, screenToken);
 
-  start(database, screen, screenToken) {
-    if (!screen || !screenToken) {
-      // チェックイン失敗
-      console.error('invalid query parameter');
-      return;
-    }
+    async function start(database, screen, screenToken) {
+      if (!screen || !screenToken) {
+        // チェックイン失敗
+        console.error('invalid query parameter');
+        return;
+      }
 
-    // アノニマスログインし、そのアカウントにtokenとscreenTokenを設定する。
-    firebase.auth().signInAnonymously()
-      .then(user => {
-        const userRef = database.ref(`users/${user.uid}`);
-        userRef.update({
-          screen: screen,
-          screenToken: screenToken,
-        });
-      })
-      .catch(error => {
+      // アノニマスログインし、そのアカウントにtokenとscreenTokenを設定する。
+      let user;
+      try {
+        user = await firebase.auth().signInAnonymously();
+      } catch (error) {
         // ログイン失敗
         console.error(error);
-        return Promise.reject(new Error());
-      })
-      // ログインに成功したので次はチェックインを試みる
-      .then(() => {
-        return fetch(config.url + '/api/screen/check_in', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            screen: screen,
-            screenToken: screenToken,
-          }),
-        });
-      })
-      .then(response => {
-        if (response.ok) {
-          // チェックイン成功
-          return Promise.resolve();
-        } else {
-          // チェックイン失敗
-          return response.json()
-            .then(json => Promise.reject(json))
-            .catch(error => Promise.reject(error));
-        }
-      })
-      // チェックイン成功
-      .then(() => {
-        this.setState({
-          checkedIn: true,
-          initialized: true,
-        });
-      })
-      // チェックイン失敗
-      .catch(error => {
-        console.error(error);
-        this.setState({
-          initialized: true,
-        });
+        return;
+      }
+      this.setState({user: user});
+
+      // ユーザーDBの参照
+      const userRef = database.ref(`users/${user.uid}`);
+
+      userRef.update({
+        screen: screen,
+        screenToken: screenToken,
       });
+
+      // ログインに成功したので次はチェックインを試みる
+      fetch(config.url + '/api/screen/check_in', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          screen: screen,
+          screenToken: screenToken,
+          user: user.uid,
+        }),
+      })
+        .then(response => {
+          if (response.ok) {
+            // チェックイン成功
+            return response.json();
+          } else {
+            // チェックイン失敗
+            return response.json()
+              .then(json => Promise.reject(new Error(json)))
+              .catch(error => Promise.reject(error));
+          }
+        })
+        .then(json => {
+          this.setState({
+            secretToken: json.secretToken,
+            checkedIn: true,
+            initialized: true,
+          });
+        })
+        .catch(error => {
+          console.error(error);
+          this.setState({
+            initialized: true,
+          });
+        });
+    }
   }
 
   handleSubmitGrid1(e) {
@@ -136,6 +142,10 @@ export class CheckIn extends React.Component {
     }
   }
 
+  /**
+   * チェックアウト時の処理
+   * @param e
+   */
   handleCheckOut(e) {
     e.preventDefault();
     fetch(config.url + '/api/screen/check_out', {
@@ -145,18 +155,23 @@ export class CheckIn extends React.Component {
       },
       body: JSON.stringify({
         screen: this.state.param.screen,
-        screenToken: this.state.param.screenToken,
+        screenToken: this.state.secretToken,
       }),
     })
       .then(response => {
         if (response.ok) {
-          location.href = config.url;
+          return this.state.user.delete();
         } else {
-          return Promise.reject(new Error(response.status));
+          return response.json()
+            .then(json => Promise.reject(new Error(json)));
         }
+      })
+      .then(() => {
+        location.href = config.url;
       })
       .catch(error => {
         console.error(error);
+        location.href = config.url;
       });
   }
 

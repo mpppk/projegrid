@@ -6,10 +6,10 @@
       "$uid": {
         ".read": "$uid === auth.uid ||
         ($uid === root.child('users/' + auth.uid + '/screen').val()
-        && data.child('token').val() === root.child('users/' + auth.uid + '/screenToken').val())",
+        && data.child('secretToken').val() === root.child('users/' + auth.uid + '/screenToken').val())",
         ".write": "$uid === auth.uid ||
         ($uid === root.child('users/' + auth.uid + '/screen').val()
-        && data.child('token').val() === root.child('users/' + auth.uid + '/screenToken').val())",
+        && data.child('secretToken').val() === root.child('users/' + auth.uid + '/screenToken').val())",
         "token":{
           ".read": "$uid === auth.uid",
           ".write": "$uid === auth.uid"
