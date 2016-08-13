@@ -1,9 +1,7 @@
 # projegrid
 
 ```
-cd config
-cp config.example.js config.js
-vim config.js
+vim config/config.js
 ```
 
 ## Start server
