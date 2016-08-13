@@ -1,0 +1,62 @@
+{
+  "name": "projegrid",
+  "scripts": {
+  },
+  "env": {
+    "APP_URL": {
+      "required": true
+    },
+    "FIREBASE_CONFIG_API_DATABASE_URL": {
+      "required": true
+    },
+    "FIREBASE_CONFIG_API_KEY": {
+      "required": true
+    },
+    "FIREBASE_CONFIG_AUTH_DOMAIN": {
+      "required": true
+    },
+    "FIREBASE_SERVICE_ACCOUNT_CLIENT_EMAIL": {
+      "required": true
+    },
+    "FIREBASE_SERVICE_ACCOUNT_PRIVATE_KEY": {
+      "required": true
+    },
+    "FIREBASE_SERVICE_ACCOUNT_PROJECT_ID": {
+      "required": true
+    },
+    "HEROKU_APP_ID": {
+      "required": true
+    },
+    "HEROKU_APP_NAME": {
+      "required": true
+    },
+    "HEROKU_RELEASE_CREATED_AT": {
+      "required": true
+    },
+    "HEROKU_RELEASE_VERSION": {
+      "required": true
+    },
+    "HEROKU_SLUG_COMMIT": {
+      "required": true
+    },
+    "HEROKU_SLUG_DESCRIPTION": {
+      "required": true
+    },
+    "NPM_CONFIG_PRODUCTION": {
+      "required": true
+    }
+  },
+  "formation": {
+    "web": {
+      "quantity": 1
+    }
+  },
+  "addons": [
+
+  ],
+  "buildpacks": [
+    {
+      "url": "heroku/nodejs"
+    }
+  ]
+}
