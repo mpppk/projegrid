@@ -1,7 +1,7 @@
 const express = require('express');
 const firebase = require('firebase');
 
-const config = require('./../../../../config/config.js');
+const config = require('./../../../../lib/config.js');
 
 const router = express.Router();
 
@@ -13,10 +13,7 @@ router.post('/', function (req, res) {
   try {
     firebase.app();
   } catch (error) {
-    const firebaseConf = config.firebase.config;
-    const firebaseServiceAccount = config.firebase.serviceAccount;
-    const conf = Object.assign({}, firebaseConf, {serviceAccount: firebaseServiceAccount});
-    firebase.initializeApp(conf);
+    firebase.initializeApp(config.firebase);
   }
   const database = firebase.database();
 

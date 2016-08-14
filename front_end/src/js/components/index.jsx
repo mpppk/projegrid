@@ -12,7 +12,7 @@ export class Index extends React.Component {
   }
 
   componentWillMount() {
-    const firebaseConf = config.firebase.config;
+    const firebaseConf = config.firebase;
     firebase.initializeApp(firebaseConf);
     firebase.auth().onAuthStateChanged(user => {
       if (user) {
