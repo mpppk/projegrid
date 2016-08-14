@@ -5,7 +5,7 @@ import firebase from 'firebase';
 import config from './utils/config.js';
 
 $(() => {
-  const firebaseConf = config.firebase.config;
+  const firebaseConf = config.firebase;
   firebase.initializeApp(firebaseConf);
   const database = firebase.database();
 
