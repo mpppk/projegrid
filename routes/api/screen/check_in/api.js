@@ -21,7 +21,7 @@ router.post('/', function (req, res) {
   }
   const database = firebase.database();
 
-  // リクエストボディのscreenとscreenTokenパラメータを取得
+  // リクエストボディのscreenIdとscreenTokenパラメータを取得
   const requestBody = req.body;
   const paScreenId = requestBody.screenId;
   const paScreenIdToken = requestBody.screenToken;
