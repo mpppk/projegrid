@@ -1,4 +1,8 @@
-const firebaseProjectId = 'sample-5f412' || process.env.FIREBASE_SERVICE_ACCOUNT_PROJECT_ID
+/**
+ * ブラウザで利用するユーザーに公開可能な設定
+ */
+
+const firebaseProjectId = 'sample-5f412' || process.env.FIREBASE_SERVICE_ACCOUNT_PROJECT_ID;
 
 module.exports = {
   url: 'http://localhost:3000',
