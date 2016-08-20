@@ -21,25 +21,25 @@ router.post('/', function (req, res) {
   }
   const database = firebase.database();
 
-  // リクエストボディのscreenとscreenTokenパラメータを取得
+  // リクエストボディのscreenIdとscreenTokenパラメータを取得
   const requestBody = req.body;
-  const paScreen = requestBody.screen;
-  const paScreenToken = requestBody.screenToken;
-  const paUser = requestBody.user;
-  if (!paScreen || !paScreenToken || !paUser) {
+  const paScreenId = requestBody.screenId;
+  const paScreenIdToken = requestBody.screenToken;
+  const paUserUid = requestBody.userUid;
+  if (!paScreenId || !paScreenIdToken || !paUserUid) {
     // リクエストボディの形式が間違っている
     res.status(400).json({
       error: 'Bad Request',
-      errorMessage: `screen: ${paScreen}, screen_token: ${paScreenToken}, user: ${paUser}`,
+      errorMessage: `screenId: ${paScreenId}, screenToken: ${paScreenIdToken}, userUid: ${paUserUid}`,
     });
     return;
   }
 
-  const screenRef = database.ref(`screens/${paScreen}`);
-  const userRef = database.ref(`users/${paUser}`);
+  const screenRef = database.ref(`screens/${paScreenId}`);
+  const userRef = database.ref(`users/${paUserUid}`);
   screenRef.once('value')
     .then(snapshot => {
-      // 管理者によるデータベースアクセスなので、paScreenの値さえ間違っていなければ
+      // 管理者によるデータベースアクセスなので、paScreenIdの値さえ間違っていなければ
       // Ruleにかかわらず確実にsnapshotを参照可能
       const dbData = snapshot.val();
 
@@ -50,7 +50,7 @@ router.post('/', function (req, res) {
         return;
       }
 
-      if (token !== paScreenToken) {
+      if (token !== paScreenIdToken) {
         // トークンがあっていない
         res.status(400).json({error: 'invalid token'});
         return;
