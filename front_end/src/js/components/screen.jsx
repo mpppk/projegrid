@@ -16,7 +16,7 @@ export class Screen extends React.Component {
   }
 
   componentDidMount() {
-    const firebaseConf = config.firebase.config;
+    const firebaseConf = config.firebase;
     firebase.initializeApp(firebaseConf);
     firebase.auth().onAuthStateChanged(function (user) {
       if (user && !user.isAnonymous) {

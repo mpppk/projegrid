@@ -25,7 +25,7 @@ export class CheckIn extends React.Component {
 
   componentWillMount() {
     // Firebaseのセットアップ
-    const firebaseConf = config.firebase.config;
+    const firebaseConf = config.firebase;
     firebase.initializeApp(firebaseConf);
     const database = firebase.database();
 
