@@ -43,22 +43,14 @@ router.post('/', function (req, res) {
       const token = dbData.token;
       if (!token) {
         // なぜかスクリーンにトークンが設定されていない
-        res.status(400).json({error: 'Failed to authenticate'});
-        return;
+        return Promise.reject(new Error('Failed to authenticate'));
       }
 
       if (token !== paScreenIdToken) {
         // トークンがあっていない
-        res.status(400).json({error: 'invalid token'});
-        return;
+        return Promise.reject(new Error('invalid token'));
       }
       // トークンの照合ができたのでここからスクリーンに書き込み可能
-    })
-    .catch(error => {
-      // データベース接続に失敗
-      // おそらくscreenの指定が間違っている
-      res.status(400).json({error: 'Failed to connect to the database'});
-      return;
     })
     .then(() => {
       // トークンを新しく生成
@@ -88,8 +80,25 @@ router.post('/', function (req, res) {
       return;
     })
     .catch(error => {
-      res.status(500).json({error: 'something wrong'});
-      return;
+      switch (error.message) {
+        case 'Failed to authenticate': {
+          res.status(400).json({error: error.message});
+          break;
+        }
+        case 'invalid token': {
+          res.status(400).json({error: error.message});
+          break;
+        }
+        case 'Failed to connect to the database': {
+          res.status(400).json({error: error.message});
+          break;
+        }
+        default: {
+          res.status(500).json({error: 'something wrong'});
+          console.log(error);
+          break;
+        }
+      }
     });
 });
 
