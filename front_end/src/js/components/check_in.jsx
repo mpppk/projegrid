@@ -31,21 +31,21 @@ export class CheckIn extends React.Component {
 
     // URLのクエリパラメータを取得
     const parsed = queryString.parse(location.search);
-    const screen = parsed.screen;
+    const screenId = parsed.screen_id;
     const screenToken = parsed.screen_token;
 
     this.setState({
       database: database,
       param: {
-        screen: screen,
+        screenId: screenId,
         screenToken: screenToken,
       },
     });
 
-    start.bind(this)(database, screen, screenToken);
+    start.bind(this)(database, screenId, screenToken);
 
-    async function start(database, screen, screenToken) {
-      if (!screen || !screenToken) {
+    async function start(database, screenId, screenToken) {
+      if (!screenId || !screenToken) {
         // チェックイン失敗
         console.error('invalid query parameter');
         return;
@@ -66,7 +66,7 @@ export class CheckIn extends React.Component {
       const userRef = database.ref(`users/${user.uid}`);
 
       userRef.update({
-        screen: screen,
+        screen: screenId,
         screenToken: screenToken,
       });
 
@@ -77,9 +77,9 @@ export class CheckIn extends React.Component {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          screen: screen,
+          screenId: screenId,
           screenToken: screenToken,
-          user: user.uid,
+          userUid: user.uid,
         }),
       })
         .then(response => {
@@ -113,7 +113,7 @@ export class CheckIn extends React.Component {
     e.preventDefault();
     if (this.grid1Input !== null) {
       const inputVal = this.grid1Input.value;
-      const screenRef = this.state.database.ref(`/screens/${this.state.param.screen}`);
+      const screenRef = this.state.database.ref(`/screens/${this.state.param.screenId}`);
       screenRef.update({
         grid1: inputVal,
       });
@@ -124,7 +124,7 @@ export class CheckIn extends React.Component {
     e.preventDefault();
     if (this.grid2Input !== null) {
       const inputVal = this.grid2Input.value;
-      const screenRef = this.state.database.ref(`/screens/${this.state.param.screen}`);
+      const screenRef = this.state.database.ref(`/screens/${this.state.param.screenId}`);
       screenRef.update({
         grid2: inputVal,
       });
@@ -135,7 +135,7 @@ export class CheckIn extends React.Component {
     e.preventDefault();
     if (this.grid3Input !== null) {
       const inputVal = this.grid3Input.value;
-      const screenRef = this.state.database.ref(`/screens/${this.state.param.screen}`);
+      const screenRef = this.state.database.ref(`/screens/${this.state.param.screenId}`);
       screenRef.update({
         grid3: inputVal,
       });
@@ -154,7 +154,7 @@ export class CheckIn extends React.Component {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        screen: this.state.param.screen,
+        screen: this.state.param.screenId,
         screenToken: this.state.secretToken,
       }),
     })
