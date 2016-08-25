@@ -180,6 +180,7 @@ export class CheckIn extends React.Component {
       return (<div>チェックイン失敗</div>);
     } else {
       return (<div>
+          <div>チェックイン中： {this.state.user.uid}</div>
           <div>
             <form onSubmit={this.handleSubmitGrid1}>
               <label>grid1<input ref={ref => this.grid1Input = ref} type="text"/></label>
