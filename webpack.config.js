@@ -7,6 +7,7 @@ var DEBUG = !process.argv.includes('--release');
 var plugins = [
   new webpack.optimize.OccurenceOrderPlugin(),
   new webpack.DefinePlugin({'process.env.NODE_ENV': '"' + (process.env.NODE_ENV || (DEBUG ? 'development' : 'production')) + '"'}),
+  new webpack.optimize.CommonsChunkPlugin('common.js'),
 ];
 
 if (!DEBUG) {
