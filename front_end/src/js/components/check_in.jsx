@@ -160,8 +160,8 @@ export class CheckIn extends React.Component {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        screen: this.state.param.screenId,
-        screenToken: this.state.secretToken,
+        screenId: this.state.param.screenId,
+        secretToken: this.state.secretToken,
       }),
     })
       .then(response => {

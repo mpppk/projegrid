@@ -17,47 +17,49 @@ router.post('/', function (req, res) {
   }
   const database = firebase.database();
 
-  // リクエストボディのscreenとscreenTokenパラメータを取得
+  // リクエストボディのscreenIdとsecretTokenパラメータを取得
   const requestBody = req.body;
-  const paScreen = requestBody.screen;
-  const paScreenToken = requestBody.screenToken;
-  if (!paScreen || !paScreenToken) {
+  const paScreenId = requestBody.screenId;
+  const paSecretToken = requestBody.secretToken;
+  if (!paScreenId || !paSecretToken) {
     res.status(400).json({
       error: 'Bad Request',
-      errorMessage: `screen: ${paScreen}, screen_token: ${paScreenToken}`,
+      errorMessage: `screenId: ${paScreenId}, secretToken: ${paSecretToken}`,
     });
     return;
   }
 
-  const screenRef = database.ref(`screens/${paScreen}`);
+  const screenRef = database.ref(`screens/${paScreenId}`);
   screenRef.once('value')
     .then(snapshot => {
-      // 管理者によるデータベースアクセスなので、paScreenの値さえ間違っていなければ
+      // 管理者によるデータベースアクセスなので、paScreenIdの値さえ間違っていなければ
       // Ruleにかかわらず確実にsnapshotを参照可能
       const secretToken = snapshot.val().secretToken;
       if (!secretToken) {
+        // なぜかスクリーンのシークレットトークンが設定されていない
         res.status(400).json({error: 'Failed to authenticate'});
         return;
       }
-      if (secretToken !== paScreenToken) {
-        // トークンがあっていない
+      if (secretToken !== paSecretToken) {
+        // トークンがあっていない (=現在チェックイン中ではないのでスクリーンの初期化はしない)
         res.status(400).json({error: 'invalid token'});
         return;
       }
 
       // トークンの照合ができたのでチェックアウト
+      // スクリーンの初期化
       screenRef.update({
         state: null,
         grid1: '',
         grid2: '',
         grid3: '',
       });
+
       res.status(200).end();
     })
     .catch(error => {
-      // データベース接続に失敗
-      // おそらくscreenの指定が間違っている
-      res.status(400).json({error: 'Failed to connect to the database'});
+      res.status(500).json({error: 'Something wrong'});
+      console.log(error);
       return;
     });
 });
