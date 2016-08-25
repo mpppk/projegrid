@@ -27,44 +27,53 @@ export class CheckIn extends React.Component {
     // Firebaseのセットアップ
     const firebaseConf = config.firebase;
     firebase.initializeApp(firebaseConf);
-    const database = firebase.database();
 
     // URLのクエリパラメータを取得
     const parsed = queryString.parse(location.search);
     const screenId = parsed.screen_id;
     const screenToken = parsed.screen_token;
 
+    if (!screenId || !screenToken) {
+      // チェックイン失敗
+      console.error('invalid query parameter');
+      this.setState({
+        initialized: true,
+      });
+      return;
+    }
+
     this.setState({
-      database: database,
       param: {
         screenId: screenId,
         screenToken: screenToken,
       },
     });
 
-    start.bind(this)(database, screenId, screenToken);
+    let user;
+    // 既にログイン済みの場合そのユーザーを利用する
+    // ログインしていない場合、新しく匿名ユーザーとしてログインする
+    firebase.auth().onAuthStateChanged(u => {
+      if (u) {
+        user = u
+      } else {
+        firebase.auth().signInAnonymously()
+          .then(u => user = u)
+          .catch(error => console.error)
+      }
 
-    async function start(database, screenId, screenToken) {
-      if (!screenId || !screenToken) {
-        // チェックイン失敗
-        console.error('invalid query parameter');
+      // ログインに失敗している
+      if (!user) {
         return;
       }
 
-      // アノニマスログインし、そのアカウントにtokenとscreenTokenを設定する。
-      let user;
-      try {
-        user = await firebase.auth().signInAnonymously();
-      } catch (error) {
-        // ログイン失敗
-        console.error(error);
-        return;
-      }
       this.setState({user: user});
 
-      // ユーザーDBの参照
-      const userRef = database.ref(`users/${user.uid}`);
+      start.bind(this)(user, screenId, screenToken);
+    });
 
+    async function start(user, screenId, screenToken) {
+      // ユーザーDBの参照
+      const database = firebase.database();
 
       // ログインに成功したので次はチェックインを試みる
       fetch(config.url + '/api/screen/check_in', {
@@ -91,6 +100,7 @@ export class CheckIn extends React.Component {
         })
         .then(json => {
           this.setState({
+            database: database,
             secretToken: json.secretToken,
             checkedIn: true,
             initialized: true,
