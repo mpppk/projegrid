@@ -65,10 +65,6 @@ export class CheckIn extends React.Component {
       // ユーザーDBの参照
       const userRef = database.ref(`users/${user.uid}`);
 
-      userRef.update({
-        screen: screenId,
-        screenToken: screenToken,
-      });
 
       // ログインに成功したので次はチェックインを試みる
       fetch(config.url + '/api/screen/check_in', {

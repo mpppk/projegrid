@@ -80,6 +80,7 @@ router.post('/', function (req, res) {
 
       // secret tokenを設定
       userRef.update({
+        screen: paScreenId,
         screenToken: secretToken,
       });
 
