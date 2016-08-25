@@ -165,20 +165,17 @@ export class CheckIn extends React.Component {
       }),
     })
       .then(response => {
-        if (response.ok) {
-          return this.state.user.delete();
-        } else {
+        if (!response.ok) {
           return response.json()
             .then(json => Promise.reject(new Error(json)));
         }
       })
+      .catch(console.log)
       .then(() => {
-        location.href = config.url;
+        return this.state.user.delete();
       })
-      .catch(error => {
-        console.error(error);
-        location.href = config.url;
-      });
+      .catch(console.log)
+      .then(() => location.href = config.url);
   }
 
 
