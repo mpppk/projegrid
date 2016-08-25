@@ -78,7 +78,7 @@ export class Screen extends React.Component {
       const {grid1, grid2, grid3, token} = this.state.screenData;
 
       // QRコード生成
-      const url = config.url + '/auth/check_in.html?screen_token=' + token + '&screen=' + this.state.screen;
+      const url = `${config.url}/auth/check_in.html?screen_id=${this.state.screen}&screen_token=${token}`;
       const qrImg = this.genQrCode(url);
 
       return (
@@ -96,7 +96,7 @@ export class Screen extends React.Component {
       const {token} = this.state.screenData;
 
       // QRコード生成
-      const url = config.url + '/auth/check_in.html?screen_token=' + token + '&screen=' + this.state.screen;
+      const url = `${config.url}/auth/check_in.html?screen_id=${this.state.screen}&screen_token=${token}`;
       const qrImg = this.genQrCode(url);
 
       return (
