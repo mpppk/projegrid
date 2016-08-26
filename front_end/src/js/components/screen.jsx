@@ -8,7 +8,7 @@ export class Screen extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      screen: '',
+      screenId: '',
       screenData: '',
     };
 
@@ -19,14 +19,24 @@ export class Screen extends React.Component {
     const firebaseConf = config.firebase;
     firebase.initializeApp(firebaseConf);
     firebase.auth().onAuthStateChanged(function (user) {
-      if (user && !user.isAnonymous) {
-        this.setState({
-          screen: user.uid,
-        });
-        this.retrieveData(user);
-      } else {
-        // ログインしていないのでトップページにリダイレクト
+      // スクリーンユーザーかどうか判定
+      if (!user || user.isAnonymous) {
+        // ログインしていないか匿名ユーザーなのでトップページにリダイレクト
         location.href = '/';
+      } else {
+        // 正規のスクリーンユーザーだった
+
+        // スクリーンのトークンを設定する
+        fetch(`${config.url}/api/token`, {method: 'GET'})
+          .then(res => res.json())
+          .then(json => {
+            const screenRef = firebase.database().ref(`screens/${user.uid}`);
+            screenRef.update({
+              token: json.token,
+            });
+            this.retrieveData(user, screenRef);
+          })
+          .catch(err => console.log);
       }
     }.bind(this));
   }
@@ -35,16 +45,19 @@ export class Screen extends React.Component {
    * DBからgridのデータを取得しstateに格納する
    * @param user 現在ログインしているFirebaseのUserオブジェクト
    */
-  retrieveData(user) {
-    const gridsData = firebase.database()
-      .ref(`screens/${user.uid}`);
-    gridsData.on('value', (data) => {
+  retrieveData(user, screenRef) {
+    // データ更新時に自動でReactのstateに格納するように設定
+    screenRef.on('value', (data) => {
       const screenData = data.val();
       if (screenData !== null) {
         this.setState({
           screenData: Object.assign({}, screenData),
         });
       }
+    });
+
+    this.setState({
+      screenId: user.uid,
     });
   }
 
@@ -78,7 +91,7 @@ export class Screen extends React.Component {
       const {grid1, grid2, grid3, token} = this.state.screenData;
 
       // QRコード生成
-      const url = `${config.url}/auth/check_in.html?screen_id=${this.state.screen}&screen_token=${token}`;
+      const url = `${config.url}/auth/check_in.html?screen_id=${this.state.screenId}&screen_token=${token}`;
       const qrImg = this.genQrCode(url);
 
       return (
@@ -96,7 +109,7 @@ export class Screen extends React.Component {
       const {token} = this.state.screenData;
 
       // QRコード生成
-      const url = `${config.url}/auth/check_in.html?screen_id=${this.state.screen}&screen_token=${token}`;
+      const url = `${config.url}/auth/check_in.html?screen_id=${this.state.screenId}&screen_token=${token}`;
       const qrImg = this.genQrCode(url);
 
       return (
