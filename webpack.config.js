@@ -40,6 +40,7 @@ module.exports = {
     screen: './front_end/src/js/screen.jsx',
     login: './front_end/src/js/login.js',
     check_in: './front_end/src/js/check_in.jsx',
+    sign_up: './front_end/src/js/sign_up.js',
   },
 
   output: {

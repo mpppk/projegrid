@@ -62,9 +62,9 @@ export class Index extends React.Component {
         <div>
           <div>ログインしてない</div>
           <div><a href="auth/login.html">スクリーンログイン</a></div>
+          <div><a href="auth/sign_up.html">スクリーン登録</a></div>
         </div>
       );
-
     }
   }
 }
