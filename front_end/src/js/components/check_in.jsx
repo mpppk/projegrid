@@ -160,25 +160,22 @@ export class CheckIn extends React.Component {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        screen: this.state.param.screenId,
-        screenToken: this.state.secretToken,
+        screenId: this.state.param.screenId,
+        secretToken: this.state.secretToken,
       }),
     })
       .then(response => {
-        if (response.ok) {
-          return this.state.user.delete();
-        } else {
+        if (!response.ok) {
           return response.json()
             .then(json => Promise.reject(new Error(json)));
         }
       })
+      .catch(console.log)
       .then(() => {
-        location.href = config.url;
+        return this.state.user.delete();
       })
-      .catch(error => {
-        console.error(error);
-        location.href = config.url;
-      });
+      .catch(console.log)
+      .then(() => location.href = config.url);
   }
 
 
