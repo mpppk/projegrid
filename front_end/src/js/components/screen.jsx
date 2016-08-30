@@ -3,6 +3,7 @@ import firebase from 'firebase';
 import qrcode from 'qrcode-npm';
 
 import config from '../utils/config.js';
+import {baseUrl} from '../utils/url.js';
 
 export class Screen extends React.Component {
   constructor(props) {
@@ -27,7 +28,7 @@ export class Screen extends React.Component {
         // 正規のスクリーンユーザーだった
 
         // スクリーンのトークンを設定する
-        fetch(`${config.url}/api/token`, {method: 'GET'})
+        fetch(baseUrl() + `/api/token`, {method: 'GET'})
           .then(res => res.json())
           .then(json => {
             const screenRef = firebase.database().ref(`screens/${user.uid}`);
@@ -91,7 +92,7 @@ export class Screen extends React.Component {
       const {grid1, grid2, grid3, token} = this.state.screenData;
 
       // QRコード生成
-      const url = `${config.url}/auth/check_in.html?screen_id=${this.state.screenId}&screen_token=${token}`;
+      const url = `${baseUrl()}/auth/check_in.html?screen_id=${this.state.screenId}&screen_token=${token}`;
       const qrImg = this.genQrCode(url);
 
       return (
@@ -109,7 +110,7 @@ export class Screen extends React.Component {
       const {token} = this.state.screenData;
 
       // QRコード生成
-      const url = `${config.url}/auth/check_in.html?screen_id=${this.state.screenId}&screen_token=${token}`;
+      const url = `${baseUrl()}/auth/check_in.html?screen_id=${this.state.screenId}&screen_token=${token}`;
       const qrImg = this.genQrCode(url);
 
       return (
