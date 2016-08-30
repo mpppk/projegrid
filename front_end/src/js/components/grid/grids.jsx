@@ -43,7 +43,7 @@ export default class Grids extends React.Component {
           <div className="col-xs-6">
             <div className="box" style={styleGrid}>
 
-              <Controller url={this.props.url}/>
+              <Controller screenId={this.props.screenId} screenToken={this.props.screenToken}/>
 
             </div>
           </div>
@@ -57,5 +57,6 @@ Grids.propTypes = {
   grid1: React.PropTypes.string,
   grid2: React.PropTypes.string,
   grid3: React.PropTypes.string,
-  url: React.PropTypes.string.isRequired,
+  screenId: React.PropTypes.string.isRequired,
+  screenToken: React.PropTypes.string.isRequired,
 };
