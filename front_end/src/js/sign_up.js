@@ -17,7 +17,7 @@ $(() => {
     firebase.auth().createUserWithEmailAndPassword(email, password)
       .then(user => {
         // 登録成功
-        location.href = config.url + '/screen.html';
+        location.href = '../screen.html';
       })
       .catch(err => {
         // ユーザー登録失敗

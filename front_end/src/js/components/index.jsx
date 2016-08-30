@@ -9,6 +9,8 @@ export class Index extends React.Component {
     this.state = {
       user: null,
     };
+
+    this.handleLogout = this.handleLogout.bind(this);
   }
 
   componentWillMount() {
@@ -32,10 +34,15 @@ export class Index extends React.Component {
 
     firebase.auth().signOut()
       .then(() => {
-        location.href = config.url;
+        this.setState({
+          user: null,
+        });
       })
-      .catch(() => {
-        location.href = config.url;
+      .catch((e) => {
+        console.log(e);
+        this.setState({
+          user: null,
+        });
       });
   }
 

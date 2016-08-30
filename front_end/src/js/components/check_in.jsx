@@ -5,6 +5,7 @@ import firebase from 'firebase';
 import queryString from 'query-string';
 
 import config from '../utils/config.js';
+import {baseUrl} from '../utils/url.js';
 
 export class CheckIn extends React.Component {
   constructor(props) {
@@ -76,7 +77,7 @@ export class CheckIn extends React.Component {
       const database = firebase.database();
 
       // ログインに成功したので次はチェックインを試みる
-      fetch(config.url + '/api/screen/check_in', {
+      fetch(baseUrl() + '/api/screen/check_in', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -154,7 +155,7 @@ export class CheckIn extends React.Component {
    */
   handleCheckOut(e) {
     e.preventDefault();
-    fetch(config.url + '/api/screen/check_out', {
+    fetch(baseUrl() + '/api/screen/check_out', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -175,7 +176,9 @@ export class CheckIn extends React.Component {
         return this.state.user.delete();
       })
       .catch(console.log)
-      .then(() => location.href = config.url);
+      .then(() => {
+        location.href = '../';
+      });
   }
 
 

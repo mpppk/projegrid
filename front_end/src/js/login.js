@@ -22,7 +22,7 @@ $(() => {
       })
       .then(user => {
         // ログイン成功
-        location.href = config.url + '/screen.html';
+        location.href = '../screen.html';
       });
   });
 });
