@@ -2,8 +2,10 @@ import React from 'react';
 import firebase from 'firebase';
 
 import config from '../utils/config.js';
+
 import {baseUrl} from '../utils/url.js';
-import Grids, {QRGrid} from './grid.jsx';
+import Grids from './grid/grids.jsx';
+import QrCode from './common/qrcode.jsx';
 
 export class Screen extends React.Component {
   constructor(props) {
@@ -95,7 +97,7 @@ export class Screen extends React.Component {
 
       return (
         <div>
-          <QRGrid url={url}/>
+          <QrCode url={url}/>
         </div>
       );
     }
