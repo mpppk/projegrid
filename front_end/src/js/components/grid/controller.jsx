@@ -30,7 +30,7 @@ export default class Controller extends React.Component {
         </div>
         <div className="col-xs-4">
           <div className="box">
-            <QrCode url={this.props.url}/>
+            <QrCode screenId={this.props.screenId} screenToken={this.props.screenToken}/>
           </div>
         </div>
         <div className="col-xs-6">
@@ -49,5 +49,6 @@ export default class Controller extends React.Component {
 }
 
 Controller.propTypes = {
-  url: React.PropTypes.string.isRequired,
+  screenId: React.PropTypes.string.isRequired,
+  screenToken: React.PropTypes.string.isRequired,
 };

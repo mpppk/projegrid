@@ -79,12 +79,9 @@ export class Screen extends React.Component {
 
       const {grid1, grid2, grid3, token} = this.state.screenData;
 
-      // QRコード用のURL
-      const url = `${baseUrl()}/auth/check_in.html?screen_id=${this.state.screenId}&screen_token=${token}`;
-
       return (
         <div>
-          <Grids grid1={grid1} grid2={grid2} grid3={grid3} url={url}/>
+          <Grids grid1={grid1} grid2={grid2} grid3={grid3} screenId={this.state.screenId} screenToken={token}/>
         </div>
       );
     } else {
@@ -92,12 +89,9 @@ export class Screen extends React.Component {
 
       const {token} = this.state.screenData;
 
-      // QRコード用のURL
-      const url = `${baseUrl()}/auth/check_in.html?screen_id=${this.state.screenId}&screen_token=${token}`;
-
       return (
         <div>
-          <QrCode url={url}/>
+          <QrCode screenId={this.state.screenId} screenToken={token}/>
         </div>
       );
     }
