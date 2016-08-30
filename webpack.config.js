@@ -6,7 +6,11 @@ var DEBUG = !process.argv.includes('--release');
 
 var plugins = [
   new webpack.optimize.OccurenceOrderPlugin(),
-  new webpack.DefinePlugin({'process.env.NODE_ENV': '"' + (process.env.NODE_ENV || (DEBUG ? 'development' : 'production')) + '"'}),
+  new webpack.DefinePlugin({
+    'process.env.NODE_ENV': '"' + (process.env.NODE_ENV || (DEBUG ? 'development' : 'production')) + '"',
+    'process.env.BASE_URL': `"${process.env.BASE_URL}"`,
+    'process.env.FIREBASE_SERVICE_ACCOUNT_PROJECT_ID': `"${process.env.FIREBASE_SERVICE_ACCOUNT_PROJECT_ID}"`,
+  }),
   new webpack.optimize.CommonsChunkPlugin('common.js'),
 ];
 
