@@ -9,6 +9,7 @@ const styleGrid = {
   boxSizing: 'border-box',
   borderRadius: '4px',
   padding: '4px 14px',
+  fontSize: '20px',
 };
 
 export default class Grids extends React.Component {
@@ -19,14 +20,14 @@ export default class Grids extends React.Component {
           <div className="col-xs-6">
             <div className="box" style={styleGrid}>
 
-              <SimpleText data={this.props.grid1}/>
+              <Grid data={this.props.grid1}/>
 
             </div>
           </div>
           <div className="col-xs-6">
             <div className="box" style={styleGrid}>
 
-              <Clock data={this.props.grid2}/>
+              <Grid data={this.props.grid2}/>
 
             </div>
           </div>
@@ -35,14 +36,14 @@ export default class Grids extends React.Component {
           <div className="col-xs-6">
             <div className="box" style={styleGrid}>
 
-              <SimpleText data={this.props.grid3}/>
+              <Controller screenId={this.props.screenId} screenToken={this.props.screenToken}/>
 
             </div>
           </div>
           <div className="col-xs-6">
             <div className="box" style={styleGrid}>
 
-              <Controller screenId={this.props.screenId} screenToken={this.props.screenToken}/>
+              <Grid data={this.props.grid3}/>
 
             </div>
           </div>
@@ -53,9 +54,31 @@ export default class Grids extends React.Component {
 }
 
 Grids.propTypes = {
-  grid1: React.PropTypes.string,
-  grid2: React.PropTypes.string,
-  grid3: React.PropTypes.string,
+  grid1: React.PropTypes.object,
+  grid2: React.PropTypes.object,
+  grid3: React.PropTypes.object,
   screenId: React.PropTypes.string.isRequired,
   screenToken: React.PropTypes.string.isRequired,
+};
+
+function Grid(props) {
+  if (!props.data) {
+    return false;
+  }
+  switch (props.data.type) {
+    case 'SIMPLE_TEXT': {
+      return (<SimpleText data={props.data}/>);
+    }
+    default: {
+      // 何も描画しない
+      return false;
+    }
+  }
+}
+
+Grid.propTypes = {
+  data: React.PropTypes.shape({
+    // グリッドの種類を表す文字列
+    type: React.PropTypes.string,
+  }),
 };
