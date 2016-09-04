@@ -1,7 +1,6 @@
 import React from 'react';
 
 import SimpleText from './simple_text.jsx';
-import Clock from './clock.jsx';
 import Controller from './controller.jsx';
 
 const styleGrid = {
