@@ -50,9 +50,6 @@ router.post('/', function (req, res) {
       // スクリーンの初期化
       screenRef.update({
         state: null,
-        grid1: '',
-        grid2: '',
-        grid3: '',
       });
 
       res.status(200).end();

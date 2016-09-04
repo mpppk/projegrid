@@ -61,13 +61,13 @@ router.post('/', function (req, res) {
       const secretToken = tokens[1];
 
       // DB初期化
-      screenRef.update({
+      screenRef.set({
         state: 'checked_in',
         token: token,
         secretToken: secretToken,
-        grid1: '',
-        grid2: '',
-        grid3: '',
+        grid1: {},
+        grid2: {},
+        grid3: {},
       });
 
       // secret tokenを設定

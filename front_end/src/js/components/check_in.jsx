@@ -122,7 +122,10 @@ export class CheckIn extends React.Component {
       const inputVal = this.grid1Input.value;
       const screenRef = this.state.database.ref(`/screens/${this.state.param.screenId}`);
       screenRef.update({
-        grid1: inputVal,
+        grid1: {
+          type: 'SIMPLE_TEXT',
+          text: inputVal,
+        },
       });
     }
   }
@@ -133,7 +136,10 @@ export class CheckIn extends React.Component {
       const inputVal = this.grid2Input.value;
       const screenRef = this.state.database.ref(`/screens/${this.state.param.screenId}`);
       screenRef.update({
-        grid2: inputVal,
+        grid2: {
+          type: 'SIMPLE_TEXT',
+          text: inputVal,
+        },
       });
     }
   }
@@ -144,7 +150,10 @@ export class CheckIn extends React.Component {
       const inputVal = this.grid3Input.value;
       const screenRef = this.state.database.ref(`/screens/${this.state.param.screenId}`);
       screenRef.update({
-        grid3: inputVal,
+        grid3: {
+          type: 'SIMPLE_TEXT',
+          text: inputVal,
+        },
       });
     }
   }
@@ -180,7 +189,6 @@ export class CheckIn extends React.Component {
         location.href = '../';
       });
   }
-
 
   render() {
     if (this.state.initialized === false) {
