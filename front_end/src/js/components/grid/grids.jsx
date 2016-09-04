@@ -1,6 +1,7 @@
 import React from 'react';
 
 import SimpleText from './simple_text.jsx';
+import Rail from './rail.jsx';
 import Controller from './controller.jsx';
 
 const styleGrid = {
@@ -68,6 +69,9 @@ function Grid(props) {
   switch (props.data.type) {
     case 'SIMPLE_TEXT': {
       return (<SimpleText data={props.data}/>);
+    }
+    case 'Y_TRAIN': {
+      return (<Rail data={props.data}/>);
     }
     default: {
       // 何も描画しない
