@@ -1,5 +1,7 @@
 # projegrid
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/mpppk/projegrid.svg)](https://greenkeeper.io/)
+
 ```
 vim .env
 vim config/config.js
